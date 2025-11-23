@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awwze | Engineering Portfolio</title>
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Подключение CSS файла -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ШУМ (ФОН) -->
+    <div class="noise-overlay"></div>
+
+    <!-- ФОНОВАЯ СЕТКА И БЛОБЫ -->
+    <div class="bg-grid"></div>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <!-- НАВИГАЦИЯ -->
+    <nav>
+        <div class="logo">AWWZE<span>.DEV</span></div>
+        <div class="nav-links">
+            <a href="#">Главная</a>
+            <a href="#projects">Проекты</a>
+            <a href="#footer">Контакты</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION (ГЛАВНЫЙ ЭКРАН) -->
+    <section class="hero">
+        
+        <!-- ЛЕВАЯ ЧАСТЬ: ТЕКСТ -->
+        <div class="hero-content">
+            <h1>
+                <span class="greeting">Привет, я Awwze</span>
+                ENGINEERING <br>
+                <span id="typewriter" class="typewriter"></span>
+            </h1>
+            <p>
+                Разрабатываю архитектуру IoT-устройств, интегрирую LLM модели и создаю автономных ботов. 
+                На стыке <span style="color:white">Hardware</span> и <span style="color:white">Software</span>.
+            </p>
+            <a href="#projects" class="btn-glow">Смотреть работы</a>
+        </div>
+
+        <!-- ПРАВАЯ ЧАСТЬ: ИНЖЕНЕРНЫЙ КЛАСТЕР -->
+        <!-- ТЕПЕРЬ ОН ВНУТРИ SECTION, ПОЭТОМУ БУДЕТ СПРАВА -->
+        <div class="hero-visual">
+            <div class="tech-cluster">
+                
+                <!-- Центральная сфера (Сетка) -->
+                <div class="wireframe-globe">
+                    <div class="globe-grid"></div>
+                </div>
+
+                <!-- Плавающие элементы (Карточки) -->
+                
+                <!-- Формула нейросети -->
+                <div class="float-card c1">
+                    <span class="icon">∫</span>
+                    <span class="text">y = kx + b</span>
+                </div>
+
+                <!-- Arduino/C++ код -->
+                <div class="float-card c2">
+                    <span class="icon">{}</span>
+                    <span class="code">void loop() {<br>&nbsp;&nbsp;digitalWrite(LED, HIGH);<br>}</span>
+                </div>
+
+                <!-- Уравнение Максвелла (Физика) -->
+                <div class="float-card c3">
+                    <span class="icon">∇</span>
+                    <span class="text">∇ × E = -∂B/∂t</span>
+                </div>
+
+                <!-- Python AI -->
+                <div class="float-card c4">
+                    <span class="icon">Py</span>
+                    <span class="code">import torch<br>model.eval()</span>
+                </div>
+
+                <!-- Декоративные точки соединения -->
+                <div class="connection-line l1"></div>
+                <div class="connection-line l2"></div>
+
+            </div>
+        </div>
+
+    </section> <!-- ВОТ ЗДЕСЬ ПРАВИЛЬНОЕ ЗАКРЫТИЕ -->
+        
+    <!-- TECH STRIP (Бегущая строка) -->
+    <div class="tech-strip">
+        <div class="track">
+            <span>Python</span> <span class="highlight">•</span>
+            <span>C++</span> <span class="highlight">•</span>
+            <span>ESP32</span> <span class="highlight">•</span>
+            <span>PCB Design</span> <span class="highlight">•</span>
+            <span>Docker</span> <span class="highlight">•</span>
+            <span>PyTorch</span> <span class="highlight">•</span>
+            <span>PostgreSQL</span> <span class="highlight">•</span>
+            <!-- Дублируем для плавности -->
+            <span>Python</span> <span class="highlight">•</span>
+            <span>C++</span> <span class="highlight">•</span>
+            <span>ESP32</span> <span class="highlight">•</span>
+        </div>
+    </div>
+
+    <!-- СЕКЦИЯ ПРОЕКТОВ (Контейнер) -->
+    <section id="projects">
+        <h2 class="section-title">Избранные <span>Работы</span></h2>
+        <!-- Сюда JS вставит карточки автоматически -->
+        <div class="projects-grid" id="grid-container"></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+        <h2>Готовы начать проект?</h2>
+        <div class="socials" style="margin-top: 30px;">
+            <a href="#">Telegram</a>
+            <a href="#">GitHub</a>
+            <a href="#">Email</a>
+        </div>
+        <p>© 2025 Awwze Engineering. All systems operational.</p>
+    </footer>
+
+    <!-- MODAL (Шаблон всплывающего окна) -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <div class="close-btn" onclick="closeModal()">✕</div>
+            <div class="modal-body">
+                <img src="" id="m-img" class="modal-img" alt="">
+                <span class="card-cat" id="m-cat">Category</span>
+                <h2 style="font-size: 2rem; margin-bottom: 15px;" id="m-title">Title</h2>
+                <p style="color: #bbb; line-height: 1.8; white-space: pre-line;" id="m-desc">Description</p>
+                <a href="#" id="m-link" class="btn-glow" style="margin-top: 30px; width: 100%; justify-content: center;">Открыть проект</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ДАННЫЕ ПРОЕКТОВ -->
+    <script>
+        const projectsData = [
+            {
+                id: 1,
+                title: "IoT Smart Controller V2",
+                category: "Hardware / C++",
+                image: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                shortDesc: "Контроллер умного дома на базе ESP32 с кастомной платой.",
+                fullDesc: "Здесь полное описание проекта...",
+                tags: ["ESP32", "C++", "Altium"],
+                link: "#"
+            },
+            {
+                id: 2,
+                title: "Neural Doc Analyzer",
+                category: "AI / Python",
+                image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                shortDesc: "SaaS решение для анализа документов через GPT-4.",
+                fullDesc: "Описание AI проекта...",
+                tags: ["Python", "FastAPI", "OpenAI"],
+                link: "#"
+            },
+            {
+                id: 3,
+                title: "Crypto Trading Bot",
+                category: "Algorithmic Trading",
+                image: "https://images.unsplash.com/photo-1611974765270-ca1258634369?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                shortDesc: "Высокочастотный торговый бот для Binance Futures.",
+                fullDesc: "Описание бота...",
+                tags: ["Python", "Binance API", "Docker"],
+                link: "#"
+            },
+
+            {
+                id: 3,
+                title: "Test",
+                category: "AI / Python",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKp2iCZlYjouj1u--b_Rgys4veWjkxZrpxZA&s",
+                shortDesc: "Test Horse AIaisiasiaisai",
+                fullDesc: "NiggasFacckck",
+                tags: ["Pandas", "Math"],
+                link: "#"
+            }
+        ];
+    </script>
+
+    <!-- Подключаем основной JS файл -->
+    <script src="script.js"></script>
+
+</body>
+</html>

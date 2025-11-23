@@ -1,0 +1,517 @@
+/* =========================================
+   1. НАСТРОЙКИ И ПЕРЕМЕННЫЕ
+   ========================================= */
+:root {
+    --bg: #030305;
+    --card-bg: rgba(20, 20, 25, 0.6);
+    --accent: #00f2ff; /* Cyan (Голубой) */
+    --accent-glow: rgba(0, 242, 255, 0.4);
+    --accent-2: #7000ff; /* Purple (Фиолетовый) */
+    --text: #ffffff;
+    --text-gray: #8b9bb4;
+    --grid-color: rgba(255, 255, 255, 0.03);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* =========================================
+   2. ФОНОВЫЕ ЭФФЕКТЫ (Шум, Сетка, Блобы)
+   ========================================= */
+.bg-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+    background-image: linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+}
+
+.noise-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9998;
+    opacity: 0.05; pointer-events: none;
+    background: url('https://grainy-gradients.vercel.app/noise.svg');
+}
+
+.background-blobs {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;
+}
+.blob {
+    position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.4;
+    animation: float 15s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+}
+.blob-1 { width: 700px; height: 700px; background: var(--accent-2); top: -10%; left: -10%; }
+.blob-2 { width: 600px; height: 600px; background: var(--accent); bottom: -10%; right: -20%; animation-delay: -5s; }
+
+@keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(50px, 50px) rotate(10deg); }
+}
+
+/* =========================================
+   3. НАВИГАЦИЯ
+   ========================================= */
+nav {
+    display: flex; justify-content: space-between; align-items: center; padding: 20px 5%;
+    backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 100;
+    background: rgba(3, 3, 5, 0.7); border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.logo { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; color: white; }
+.logo span { color: var(--accent); }
+
+.nav-links { display: flex; gap: 30px; }
+.nav-links a {
+    color: var(--text-gray); text-decoration: none; font-size: 0.9rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; position: relative;
+}
+.nav-links a:hover { color: white; }
+
+/* =========================================
+   4. ГЛАВНЫЙ ЭКРАН (HERO)
+   ========================================= */
+.hero {
+    min-height: 100vh;
+    display: flex;              /* ОБЯЗАТЕЛЬНО */
+    flex-direction: row;        /* СТРОГО В РЯД */
+    align-items: center;        /* Центр по вертикали */
+    justify-content: space-between; /* По краям */
+    padding: 0 5% 0 10%; 
+    overflow: hidden;
+    position: relative;
+}
+
+.hero-content {
+    flex: 1;                    /* Занимает доступное место */
+    max-width: 50%;             /* Половина экрана */
+    z-index: 10;
+    position: relative;
+}
+
+/* --- ЗАГОЛОВОК (Компактный) --- */
+.hero h1 {
+    font-family: 'Montserrat', sans-serif; 
+    font-size: 3.5rem; 
+    line-height: 1.1;
+    font-weight: 900; 
+    margin-bottom: 20px;
+}
+/* Остальной CSS можно не менять, если он совпадает с тем, что я давал раньше */
+
+.hero h1 .greeting { 
+    font-size: 1rem; /* Чуть меньше приветствие */
+    font-weight: 400; 
+    color: var(--accent); 
+    letter-spacing: 4px; 
+    margin-bottom: 10px; 
+    display: block; 
+    text-transform: uppercase; 
+}
+.hero p {
+    color: var(--text-gray); max-width: 600px; margin-top: 20px; 
+    line-height: 1.8; font-size: 1.1rem; margin-bottom: 40px;
+    background: rgba(3, 3, 5, 0.4); /* Подложка под текст, если наедет на дыру */
+    backdrop-filter: blur(3px);
+}
+
+.btn-glow {
+    display: inline-flex; align-items: center; justify-content: center; padding: 16px 40px;
+    background: rgba(0, 242, 255, 0.05); border: 1px solid rgba(0, 242, 255, 0.3);
+    color: var(--accent); text-decoration: none; font-weight: bold; text-transform: uppercase;
+    letter-spacing: 2px; transition: 0.4s; position: relative; overflow: hidden;
+}
+.btn-glow:hover { 
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.3); 
+    border-color: var(--accent); background: rgba(0, 242, 255, 0.1); color: white; 
+}
+
+/* =========================================
+   5. ЭФФЕКТ ПЕЧАТАНИЯ (Зеленое стирание)
+   ========================================= */
+.typewriter {
+    border-right: 4px solid var(--accent); /* Голубой курсор по умолчанию */
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    color: var(--accent);
+    padding-right: 5px;
+    animation: blink-caret 0.75s step-end infinite;
+    min-height: 1.2em;
+}
+
+/* Класс добавляется JS-ом при стирании */
+.typewriter.erasing {
+    border-right: 12px solid #33ff00; /* Жирный зеленый курсор */
+    color: #33ff00; /* Текст зеленый */
+    text-shadow: 0 0 15px rgba(51, 255, 0, 0.8); /* Свечение */
+    animation: none;
+}
+
+@keyframes blink-caret { 
+    0%, 100% { border-color: transparent; } 
+    50% { border-color: var(--accent); } 
+}
+
+/* =========================================
+   6. ИНЖЕНЕРНЫЙ КЛАСТЕР (MATH & CODE)
+   ========================================= */
+.hero-visual {
+    position: relative;
+    width: 50%; /* Занимает правую половину */
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+}
+
+.tech-cluster {
+    position: relative;
+    width: 500px; height: 500px;
+    transform-style: preserve-3d;
+    animation: cluster-float 6s ease-in-out infinite;
+}
+
+/* --- ЦЕНТРАЛЬНАЯ СЕТКА (ГЛОБУС) --- */
+.wireframe-globe {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: radial-gradient(circle, rgba(0, 242, 255, 0.05) 0%, transparent 70%);
+    z-index: 0;
+}
+.globe-grid {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+    mask-image: radial-gradient(circle, black 40%, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle, black 40%, transparent 80%);
+    animation: rotate-globe 20s linear infinite;
+}
+
+/* --- ПЛАВАЮЩИЕ КАРТОЧКИ --- */
+.float-card {
+    position: absolute;
+    background: rgba(20, 20, 25, 0.7); /* Темный полупрозрачный фон */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px); /* Эффект матового стекла */
+    padding: 15px 20px;
+    border-radius: 12px;
+    display: flex; align-items: center; gap: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: 0.3s;
+    cursor: default;
+    z-index: 10;
+}
+.float-card:hover {
+    border-color: var(--accent);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+    z-index: 20;
+}
+
+/* Иконки внутри карточек */
+.float-card .icon {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: bold;
+    color: var(--accent);
+    font-size: 1.2rem;
+    background: rgba(0, 242, 255, 0.1);
+    width: 35px; height: 35px;
+    display: flex; justify-content: center; align-items: center;
+    border-radius: 8px;
+}
+
+/* Текст формул */
+.float-card .text {
+    color: #fff;
+    font-family: 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+/* Текст кода */
+.float-card .code {
+    color: var(--text-gray);
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    line-height: 1.2;
+}
+
+/* --- ПОЗИЦИИ КАРТОЧЕК --- */
+/* Расставляем их вокруг центра */
+.c1 { top: 0%; right: 10%; animation: float-1 5s ease-in-out infinite; }
+.c2 { top: 40%; left: -10%; border-color: rgba(112, 0, 255, 0.3); animation: float-2 7s ease-in-out infinite; }
+.c2 .icon { color: var(--accent-2); background: rgba(112, 0, 255, 0.1); }
+.c3 { bottom: 10%; right: 0%; animation: float-1 6s ease-in-out infinite 1s; }
+.c4 { bottom: -5%; left: 20%; animation: float-2 8s ease-in-out infinite 0.5s; }
+
+/* --- ЛИНИИ СОЕДИНЕНИЯ (ДЕКОР) --- */
+.connection-line {
+    position: absolute;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    height: 1px; opacity: 0.3;
+}
+.l1 { top: 20%; left: 20%; width: 100px; transform: rotate(45deg); }
+.l2 { bottom: 30%; right: 20%; width: 150px; transform: rotate(-30deg); background: linear-gradient(90deg, transparent, var(--accent-2), transparent); }
+
+/* --- АНИМАЦИИ --- */
+@keyframes rotate-globe {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes cluster-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+@keyframes float-1 {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes float-2 {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(10px) rotate(-2deg); }
+}
+
+/* --- МОБИЛЬНАЯ АДАПТАЦИЯ --- */
+@media (max-width: 900px) {
+    .hero-visual { 
+        width: 100%; height: 300px; 
+        margin-top: 20px;
+    }
+    .tech-cluster { transform: scale(0.7); }
+    /* На телефоне можно скрыть часть карточек, чтобы не было каши, или оставить как есть */
+    .c1 { right: -10%; }
+    .c2 { left: -10%; }
+}
+
+/* =========================================
+   7. БЕГУЩАЯ СТРОКА
+   ========================================= */
+.tech-strip {
+    width: 100%; background: rgba(255, 255, 255, 0.02); border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05); padding: 15px 0; margin: 50px 0; overflow: hidden;
+    white-space: nowrap; position: relative;
+}
+.track { display: inline-block; animation: scroll 20s linear infinite; }
+.track span {
+    font-size: 1rem; text-transform: uppercase; font-weight: 700; color: #555; margin: 0 30px;
+}
+.track span.highlight { color: var(--accent-2); }
+@keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* --- ВАЖНО: Адаптация для ноутбуков (13-15 дюймов) --- */
+@media (max-width: 1400px) {
+    .hero h1 {
+        font-size: 2.8rem; /* Еще меньше для ноутбуков */
+    }
+    
+    .hero-content {
+        max-width: 55%; /* Даем тексту чуть больше места */
+        padding-right: 10px;
+    }
+    
+    /* Немного уменьшаем правый блок с карточками */
+    .tech-cluster {
+        transform: scale(0.8); 
+        margin-left: 0;
+    }
+}
+
+/* --- Для телефонов оставляем как было --- */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2.2rem; }
+}
+
+/* =========================================
+   8. СЕТКА ПРОЕКТОВ
+   ========================================= */
+.section-title {
+    text-align: center; font-size: 2.5rem; margin: 100px 0 60px;
+    font-family: 'Montserrat', sans-serif; font-weight: 800; text-transform: uppercase;
+}
+.section-title span { color: var(--accent); }
+
+.projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px; padding: 0 10%; margin-bottom: 120px;
+}
+
+.project-card {
+    background: var(--card-bg); border-radius: 16px; overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05); position: relative;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;
+}
+.project-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 40px -10px rgba(0, 242, 255, 0.15);
+}
+
+.card-image-wrapper { position: relative; width: 100%; height: 240px; overflow: hidden; }
+.card-image {
+    width: 100%; height: 100%; background-size: cover; background-position: center;
+    transition: 0.7s; filter: grayscale(100%);
+}
+.project-card:hover .card-image { transform: scale(1.1); filter: grayscale(0%); }
+.card-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to top, #000 0%, transparent 100%); opacity: 0.6;
+}
+
+.card-info { padding: 25px; position: relative; }
+.card-cat { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; font-weight: 700; }
+.card-info h3 { font-size: 1.5rem; margin-bottom: 12px; color: white; font-family: 'Montserrat', sans-serif; }
+.card-info p { color: var(--text-gray); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
+
+.tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+.tags span {
+    font-size: 0.7rem; padding: 5px 12px; background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; color: #ccc;
+}
+
+/* =========================================
+   9. МОДАЛЬНОЕ ОКНО
+   ========================================= */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); z-index: 2000;
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; pointer-events: none; transition: 0.4s; padding: 20px;
+}
+.modal-overlay.active { opacity: 1; pointer-events: all; }
+
+.modal-content {
+    background: #0a0a0c; width: 100%; max-width: 900px; max-height: 90vh;
+    border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow-y: auto; position: relative; transform: translateY(50px); transition: 0.4s;
+}
+.modal-overlay.active .modal-content { transform: translateY(0); }
+
+.close-btn {
+    position: absolute; top: 20px; right: 20px; width: 40px; height: 40px;
+    background: rgba(255,255,255,0.1); border-radius: 50%; display: flex;
+    justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; z-index: 10;
+}
+.close-btn:hover { background: var(--accent); color: #000; }
+
+.modal-body { padding: 40px; }
+.modal-img { width: 100%; height: 350px; object-fit: cover; border-radius: 12px; margin-bottom: 30px; }
+
+/* =========================================
+   10. FOOTER
+   ========================================= */
+footer {
+    padding: 80px 10%; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: radial-gradient(circle at top, rgba(20, 20, 25, 0.8), transparent);
+}
+.socials { display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; }
+.socials a { color: var(--text-gray); font-size: 1.2rem; transition: 0.3s; text-decoration: none; }
+.socials a:hover { color: var(--accent); transform: translateY(-3px); }
+footer p { color: #444; font-size: 0.9rem; }
+
+/* =========================================
+   11. МОБИЛЬНАЯ АДАПТАЦИЯ
+   ========================================= */
+/* =========================================
+   11. МОБИЛЬНАЯ АДАПТАЦИЯ (FINAL)
+   ========================================= */
+@media (max-width: 900px) {
+    /* 1. Перестраиваем Hero в колонку */
+    .hero { 
+        flex-direction: column; 
+        justify-content: flex-start; /* Начинаем сверху */
+        text-align: center; /* Центрируем текст */
+        padding: 100px 5% 50px; /* Отступы сверху/снизу */
+        height: auto; /* Высота авто, чтобы всё влезло */
+        min-height: 100vh;
+    }
+    
+    /* 2. Настраиваем блок текста */
+    .hero-content { 
+        max-width: 100%; 
+        width: 100%; 
+        padding-right: 0;
+        margin-bottom: 20px; 
+        z-index: 20; /* Текст поверх анимации */
+    }
+
+    .hero h1 { font-size: 2.5rem; }
+    .hero p { margin-left: auto; margin-right: auto; } /* Центрируем параграф */
+    
+    /* 3. Контейнер для анимации */
+    .hero-visual { 
+        width: 100%; 
+        height: 400px; /* Фиксируем высоту для анимации */
+        margin-left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: visible; /* Разрешаем карточкам летать */
+    }
+    
+    /* 4. Масштабируем сам кластер (Сферу + Карточки) */
+    .tech-cluster { 
+        transform: scale(0.65); /* Уменьшаем до 65% */
+        margin-left: 0;
+        width: 350px; /* Чуть уменьшаем базовую ширину области */
+        height: 350px;
+    }
+
+    /* 5. Двигаем карточки ближе к центру, чтобы не вылезали за экран */
+    
+    /* Верхняя правая (Формула нейросети) */
+    .c1 { 
+        right: -10%; 
+        top: -10%;
+    }
+    
+    /* Левая (Код) - сдвигаем правее */
+    .c2 { 
+        left: -15%; 
+        top: 30%;
+    }
+    
+    /* Нижняя правая (Максвелл) */
+    .c3 { 
+        right: -5%; 
+        bottom: 0%;
+    }
+    
+    /* Нижняя левая (Python) */
+    .c4 { 
+        left: 0%; 
+        bottom: -15%;
+    }
+
+    /* Делаем шрифт внутри карточек чуть меньше */
+    .float-card {
+        padding: 10px 15px;
+    }
+    .float-card .text { font-size: 0.9rem; }
+    .float-card .code { font-size: 0.7rem; }
+    .float-card .icon { width: 30px; height: 30px; font-size: 1rem; }
+}
+
+/* Для совсем маленьких экранов (iPhone SE и т.д.) */
+@media (max-width: 380px) {
+    .hero h1 { font-size: 2rem; }
+    .tech-cluster { transform: scale(0.55); } /* Еще меньше */
+}
